@@ -77,7 +77,6 @@ As of 4.1, Spring Data Neo4j provides suppport for connecting to Neo4j using dif
 - Http driver
 - Embedded driver
 
-You must configure your application by specifying which driver you want to use to connect to Neo4j.
 There are two basic ways to do this: using a single properties file, or programmatically.
 
 === Properties file
