@@ -50,11 +50,25 @@ public class Neo4jMappingContext extends AbstractMappingContext<Neo4jPersistentE
      * @param metaData The OGM {@link MetaData} from which to extract the persistent entities
      */
     public Neo4jMappingContext(MetaData metaData) {
+        this(metaData, null);
+    }
+
+    /**
+     * Constructs a new {@link Neo4jMappingContext} based on the persistent entities in the given {@link MetaData}.
+     *
+     * @param metaData The OGM {@link MetaData} from which to extract the persistent entities
+     * @param classLoader The classLoader which should be used to load classes of the metaData
+     */
+    public Neo4jMappingContext(MetaData metaData, ClassLoader classLoader) {
         this.metaData = metaData;
 
         for (ClassInfo classInfo : metaData.persistentEntities()) {
             try {
-                addPersistentEntity(Class.forName(classInfo.name()));
+                if (classLoader == null) {
+                    addPersistentEntity(Class.forName(classInfo.name()));
+                } else {
+                    addPersistentEntity(Class.forName(classInfo.name(), false, classLoader));
+                }
             } catch (ClassNotFoundException e) {
                 logger.error("Failed to load class: " + classInfo.name() + " named in ClassInfo due to exception", e);
             }
